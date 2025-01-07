@@ -1,0 +1,28 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                 String       @id @default(cuid())
+  email              String       @unique
+  createdAt          DateTime     @default(now())
+  name               String
+  whiteboards        Whiteboard[] @relation("WhiteboardMembers")
+  hostedWhiteboards  Whiteboard[] @relation("HostWhiteboard")
+}
+
+model Whiteboard {
+  id        String    @id @default(cuid())
+  title     String
+  createdAt DateTime  @default(now())
+  userEmail String     @map("user_email") // Explicit mapping to DB column name (optional)
+  members   User[]    @relation("WhiteboardMembers")
+  host      User      @relation("HostWhiteboard", fields: [userEmail], references: [email])
+
+  @@index([title])
+}
