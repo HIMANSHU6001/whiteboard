@@ -53,13 +53,13 @@ const Chat: React.FC<ChatProps> = ({ socket, userInfo }) => {
       <button
         hidden={showChat}
         onClick={() => setShowChat(true)}
-        className="btn btn-light fixed top-20 right-5 z-30"
+        className="btn btn-light fixed md:top-20 bottom-2 md:bottom-auto right-1/2 translate-x-1/2 md:right-10 z-30"
       >
         <img src="/icons/chat.svg" alt="chat" />
       </button>
 
       {showChat && (
-        <div className="fixed z-30 top-1/2 -translate-y-1/2 right-5 bg-white p-4 rounded shadow-lg w-fit h-[80%] flex flex-col">
+        <div className="fixed z-30 bottom-0 md:top-1/2 md:-translate-y-1/2 md:right-5 bg-white p-4 rounded shadow-lg w-full md:w-fit h-[80%] flex flex-col">
           <div className="chat-messages flex-grow overflow-y-auto mb-4 relative">
             <button
               className="top-0 right-0"

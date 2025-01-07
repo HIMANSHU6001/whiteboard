@@ -140,10 +140,24 @@ const Navbar = ({ isHost }: NavbarProps) => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
+          {id && (
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(id);
+                toast.success("session ID copied to clip board");
+              }}
+            >
+              <img src="/icons/link.svg" />
+            </button>
+          )}
+
+          <button>
+            <img src="/icons/save.svg" onClick={() => saveCanvasAsImage()} />
+          </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
-            className="focus:outline-none"
+            className="focus:outline-none ml-5"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -167,18 +181,30 @@ const Navbar = ({ isHost }: NavbarProps) => {
       {isOpen && (
         <div className="md:hidden bg-blue-700 text-white flex flex-col space-y-2 px-4 py-2">
           <button
+            type="button"
             onClick={() => {
-              handleCreateSession();
+              if (!isHost) {
+                handleCreateSession();
+              } else {
+                handleDeleteSession();
+              }
             }}
-            className="hover:text-gray-300"
+            className=""
           >
-            Create Session
+            {`${isHost ? "Delete" : "Create"}`} Session
           </button>
           <button
-            onClick={() => console.log("Join session")}
-            className="hover:text-gray-300"
+            type="button"
+            onClick={() => {
+              if (id) {
+                handleLeaveSession();
+              } else {
+                handleJoinSession();
+              }
+            }}
+            className=""
           >
-            Join Session
+            {`${id ? "Leave" : "Join"}`} Session
           </button>
         </div>
       )}

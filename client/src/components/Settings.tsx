@@ -108,223 +108,224 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-1/2 -translate-y-1/2 right-5 bg-white p-6 rounded-lg shadow-2xl w-72 space-y-4">
-      {selectedObject.current ? (
-        <>
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            Object Settings
-          </h3>
-          {selectedObject.current.type === "circle" && (
+    <>
+      <div className="fixed flex rounded-full top-1/2 md:top-20  md:right-20 -rotate-90 md:rotate-0  -right-14">
+        <label className="hidden md:block my-auto text-sm w-32 font-medium text-gray-600 text-nowrap mx-1">
+          Stroke Width:
+        </label>
+        <input
+          className="w-full  mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+          type="range"
+          min="1"
+          max="12"
+          step="0.1"
+          value={globalStrokeWidth !== null ? globalStrokeWidth : 0}
+          onChange={(e) => {
+            const value = parseFloat(e.target.value);
+            setGlobalStrokeWidth(value);
+          }}
+        />
+      </div>
+      <>
+        {selectedObject.current && (
+          <div className="fixed top-1/2 -translate-y-1/2 right-5 bg-white p-6 rounded-lg shadow-2xl w-72 space-y-4">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">
+              Object Settings
+            </h3>
+            {selectedObject.current.type === "circle" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600">
+                  Radius:
+                </label>
+                <input
+                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                  type="number"
+                  value={radius !== null ? radius.toFixed(2) : ""}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    setRadius(value);
+                    handlePropertyChange("radius", value);
+                  }}
+                />
+              </div>
+            )}
+            {selectedObject.current.type === "rect" && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Height:
+                  </label>
+                  <input
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    type="number"
+                    value={height !== null ? height.toFixed(2) : ""}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      setHeight(value);
+                      handlePropertyChange("height", value);
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Width:
+                  </label>
+                  <input
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    type="number"
+                    value={width !== null ? width.toFixed(2) : ""}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      setWidth(value);
+                      handlePropertyChange("width", value);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+            {selectedObject.current.type === "textbox" && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Font Size:
+                  </label>
+                  <input
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    type="number"
+                    value={fontSize !== null ? fontSize.toFixed(2) : ""}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value);
+                      setFontSize(value);
+                      handlePropertyChange("fontSize", value);
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Font Weight:
+                  </label>
+                  <select
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    value={fontWeight}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFontWeight(value);
+                      handlePropertyChange("fontWeight", value);
+                    }}
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Font Style:
+                  </label>
+                  <select
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    value={fontStyle}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFontStyle(value);
+                      handlePropertyChange("fontStyle", value);
+                    }}
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="italic">Italic</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Text Decoration:
+                  </label>
+                  <select
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    value={textDecoration}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setTextDecoration(value);
+                      handlePropertyChange("underline", value === "underline");
+                    }}
+                  >
+                    <option value="">None</option>
+                    <option value="underline">Underline</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600">
+                    Text Align:
+                  </label>
+                  <select
+                    className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                    value={textAlign}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setTextAlign(value);
+                      handlePropertyChange("textAlign", value);
+                    }}
+                  >
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                    <option value="justify">Justify</option>
+                  </select>
+                </div>
+              </div>
+            )}
+            {selectedObject.current.type !== "textbox" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600">
+                  Stroke Width:
+                </label>
+                <input
+                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  value={strokeWidth !== null ? strokeWidth : 0}
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    setStrokeWidth(value);
+                    handlePropertyChange("strokeWidth", value);
+                  }}
+                />
+              </div>
+            )}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
-                Radius:
+                Stroke Color:
               </label>
               <input
                 className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                type="number"
-                value={radius !== null ? radius.toFixed(2) : ""}
+                type="color"
+                value={strokeColor}
                 onChange={(e) => {
-                  const value = parseFloat(e.target.value);
-                  setRadius(value);
-                  handlePropertyChange("radius", value);
+                  const value = e.target.value;
+                  setStrokeColor(value);
+                  handlePropertyChange("stroke", value);
                 }}
               />
             </div>
-          )}
-          {selectedObject.current.type === "rect" && (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Height:
-                </label>
-                <input
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  type="number"
-                  value={height !== null ? height.toFixed(2) : ""}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value);
-                    setHeight(value);
-                    handlePropertyChange("height", value);
-                  }}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Width:
-                </label>
-                <input
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  type="number"
-                  value={width !== null ? width.toFixed(2) : ""}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value);
-                    setWidth(value);
-                    handlePropertyChange("width", value);
-                  }}
-                />
-              </div>
-            </div>
-          )}
-          {selectedObject.current.type === "textbox" && (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Font Size:
-                </label>
-                <input
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  type="number"
-                  value={fontSize !== null ? fontSize.toFixed(2) : ""}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value);
-                    setFontSize(value);
-                    handlePropertyChange("fontSize", value);
-                  }}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Font Weight:
-                </label>
-                <select
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  value={fontWeight}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setFontWeight(value);
-                    handlePropertyChange("fontWeight", value);
-                  }}
-                >
-                  <option value="normal">Normal</option>
-                  <option value="bold">Bold</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Font Style:
-                </label>
-                <select
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  value={fontStyle}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setFontStyle(value);
-                    handlePropertyChange("fontStyle", value);
-                  }}
-                >
-                  <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Text Decoration:
-                </label>
-                <select
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  value={textDecoration}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setTextDecoration(value);
-                    handlePropertyChange("underline", value === "underline");
-                  }}
-                >
-                  <option value="">None</option>
-                  <option value="underline">Underline</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600">
-                  Text Align:
-                </label>
-                <select
-                  className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                  value={textAlign}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setTextAlign(value);
-                    handlePropertyChange("textAlign", value);
-                  }}
-                >
-                  <option value="left">Left</option>
-                  <option value="center">Center</option>
-                  <option value="right">Right</option>
-                  <option value="justify">Justify</option>
-                </select>
-              </div>
-            </div>
-          )}
-          {selectedObject.current.type !== "textbox" && (
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-600">
-                Stroke Width:
+                Fill Color:
               </label>
               <input
                 className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-                type="range"
-                min="0"
-                max="10"
-                step="0.1"
-                value={strokeWidth !== null ? strokeWidth : 0}
+                type="color"
+                value={fillColor}
                 onChange={(e) => {
-                  const value = parseFloat(e.target.value);
-                  setStrokeWidth(value);
-                  handlePropertyChange("strokeWidth", value);
+                  const value = e.target.value;
+                  setFillColor(value);
+                  handlePropertyChange("fill", value);
                 }}
               />
             </div>
-          )}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Stroke Color:
-            </label>
-            <input
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-              type="color"
-              value={strokeColor}
-              onChange={(e) => {
-                const value = e.target.value;
-                setStrokeColor(value);
-                handlePropertyChange("stroke", value);
-              }}
-            />
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">
-              Fill Color:
-            </label>
-            <input
-              className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-              type="color"
-              value={fillColor}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFillColor(value);
-                handlePropertyChange("fill", value);
-              }}
-            />
-          </div>
-        </>
-      ) : (
-        <div>
-          <label className="block text-sm font-medium text-gray-600">
-            Stroke Width:
-          </label>
-          <input
-            className="w-full mt-1 px-3 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
-            type="range"
-            min="1"
-            max="12"
-            step="0.1"
-            value={globalStrokeWidth !== null ? globalStrokeWidth : 0}
-            onChange={(e) => {
-              const value = parseFloat(e.target.value);
-              setGlobalStrokeWidth(value);
-            }}
-          />
-        </div>
-      )}
-    </div>
+        )}
+      </>
+    </>
   );
 };
 

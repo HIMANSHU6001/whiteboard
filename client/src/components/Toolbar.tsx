@@ -92,7 +92,6 @@ const Toolbar = () => {
           setIsDrawing(true);
         }
       } else if (isDrawing) {
-        // Stop drawing on second click
         setIsDrawing(false);
         if (currentShape) {
           currentShape.set({ selectable: true });
