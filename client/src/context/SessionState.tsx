@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import SessionContext from "./sessionContext";
 import toast from "react-hot-toast";
 
@@ -17,13 +17,6 @@ const SessionState: React.FC<SessionStateProps> = ({
 }) => {
   const [sessionTitle, setSessionTitle] = useState("");
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("joined_session", (data: any) => {
-      toast.success(`${data.name} Joined session`);
-    });
-  }, [socket]);
-
   const createWhiteboardSession = async (
     title: string,
     whiteBoardId: string
@@ -33,7 +26,6 @@ const SessionState: React.FC<SessionStateProps> = ({
       return false;
     }
 
-    console.log("Creating whiteboard session with title:", title);
     try {
       const response = await fetch("http://localhost:5000/whiteboards", {
         method: "POST",
@@ -47,6 +39,11 @@ const SessionState: React.FC<SessionStateProps> = ({
       const data = await response.json();
       setSessionTitle(data.title);
       toast.success(`${data.title} Created`);
+
+      socket.emit("join_session", {
+        id: data.id,
+        name: userInfo.given_name,
+      });
       return true;
     } catch (error) {
       console.error("Error creating whiteboard session:", error);
@@ -74,6 +71,7 @@ const SessionState: React.FC<SessionStateProps> = ({
     const data = await response.json();
 
     setSessionTitle(data.whiteboard.title);
+
     socket.emit("join_session", {
       id: data.whiteboard.id,
       name: userInfo.given_name,
@@ -113,7 +111,6 @@ const SessionState: React.FC<SessionStateProps> = ({
     }
     const authToken = token || storageToken;
     const email = userInfo?.email || storageUserInfo.email;
-    // console.log("Getting role for whiteboard with id:", authToken, email, id);
 
     const response = await fetch(`http://localhost:5000/whiteboards/ishost`, {
       method: "POST",

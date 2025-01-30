@@ -34,27 +34,29 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+const sessionUsers: { [key: string]: string[] } = {};
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
 
   // user Join a session
   socket.on("join_session", (data) => {
     socket.join(data.id);
-    console.log(`${data.name} joined session: ${data.id}`);
-
     socket.to(data.id).emit("joined_session", data);
+    if (!sessionUsers[data.id]) {
+      sessionUsers[data.id] = [];
+    }
+    sessionUsers[data.id].push(data.name);
   });
 
   // Listen for canvas updates
   socket.on("canvas_update", (data) => {
     if (!data.flag) return;
+
     socket.to(data.whiteboardId).emit("canvas_updated", data);
   });
 
   //Listen for user messages
   socket.on("message_send", (data) => {
-    console.log("datasent by", data.sender, "in room", data.whiteboardId);
 
     socket.broadcast.emit("message_recive", data);
   });

@@ -20,6 +20,8 @@ const Navbar = ({ isHost }: NavbarProps) => {
     return <div>Error: Session context is not provided.</div>;
   }
 
+  
+
   const {
     createWhiteboardSession,
     generateUniqueId,
@@ -58,7 +60,7 @@ const Navbar = ({ isHost }: NavbarProps) => {
       "Are you sure you want to delete the session?"
     );
     if (!confirmDelete || !id) return;
-    console.log("Deleting session with id:", id);
+    console.info("Deleting session with id:", id);
     deleteWhiteboardSession(id);
     navigate("/");
   };
@@ -78,7 +80,6 @@ const Navbar = ({ isHost }: NavbarProps) => {
       "Are you sure you want to leave the session?"
     );
     if (!confirmLeave || !id) return;
-    console.log("Leaving session with id:", id);
     leaveWhiteboardSession(id);
     navigate("/");
   };

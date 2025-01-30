@@ -16,19 +16,11 @@ const Chat: React.FC<ChatProps> = ({ socket, userInfo }) => {
   >([]);
   const [currentMessage, setCurrentMessage] = useState("");
 
-  useEffect(() => {
-    console.log("Messages = ", messages);
-  }, [messages]);
 
   useEffect(() => {
-    console.log("Socket = ", socket);
     socket.off("message_recive");
     socket.on("message_recive", (data: any) => {
-      console.log("Message recived = ", data);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: data.sender, message: data.message },
-      ]);
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
   }, [socket]);
 

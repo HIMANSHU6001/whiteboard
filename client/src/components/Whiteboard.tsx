@@ -54,14 +54,12 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ setIsHost, socket }) => {
     socket.on("canvas_updated", (data: any) => {
       flag.current = false;
       if (!editor) return;
-      console.log("data recived = ", data);
       editor.canvas.loadFromJSON(data.canvas, () => {
-        console.log("editor.canvas = ", editor.canvas);
         editor.canvas.renderAll();
       });
       setTimeout(() => {
         flag.current = true;
-      }, 1000);
+      }, 500);
     });
   }, [editor, id, socket]);
 
@@ -151,7 +149,6 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ setIsHost, socket }) => {
     editor.canvas.renderAll();
 
     return () => {
-      console.log("Removing canvas event listeners", editor.canvas);
       editor.canvas.off("object:added", emitCanvasUpdate);
       editor.canvas.off("object:removed", emitCanvasUpdate);
       editor.canvas.off("object:modified", emitCanvasUpdate);
@@ -159,7 +156,16 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ setIsHost, socket }) => {
       editor.canvas.off("object:scaling", emitCanvasUpdate);
       editor.canvas.off("object:rotating", emitCanvasUpdate);
     };
-  }, [editor]);
+  }, [editor, id]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.off("joined_session");
+    socket.on("joined_session", (data: any) => {
+      console.info("User joined session", data);
+      toast.success(`${data.name} Joined session`);
+    });
+  }, [socket]);
 
   return (
     <>
